@@ -33,12 +33,6 @@ class Doctor(Resource):
         doctor = conn.execute("SELECT * FROM doctor WHERE doc_id=?", (id,)).fetchall()
         return doctor
 
-    def delete(self, id):
-        """Delete the doctor by its id"""
-
-        conn.execute("DELETE FROM doctor WHERE doc_id=?", (id,))
-        conn.commit()
-        return {'msg': 'Successfully deleted'}
 
     def put(self, id):
         """Update the doctor by its id"""
@@ -73,20 +67,26 @@ class DoctorAssignPatients(Resource):
 
         # Fetch currently assigned patients for the doctor
         assigned_patients_record = conn.execute("SELECT patients_assigned FROM doctor WHERE doc_id=?", (doc_id,)).fetchone()
+
         if assigned_patients_record:
             assigned_patients = assigned_patients_record['patients_assigned']
-            assigned_patients_list = assigned_patients.split(',')
-            if str(patient_id) in assigned_patients_list:
-                return {'message': 'Patient already assigned to this doctor'}, 400
-
+            if assigned_patients:
+                assigned_patients_list = assigned_patients.split(',')
+                if str(patient_id) in assigned_patients_list:
+                    return {'message': 'Patient already assigned to this doctor'}, 400
+                else:
+                    assigned_patients_updated = f"{assigned_patients},{patient_id}"
+            else:
+                assigned_patients_updated = str(patient_id)
         else:
-            # If no patients are assigned yet, initialize the list with the new patient
             assigned_patients_updated = str(patient_id)
 
         # Update doctor's assigned patients
         conn.execute("UPDATE doctor SET patients_assigned=? WHERE doc_id=?", (assigned_patients_updated, doc_id))
         conn.commit()
         return {'message': 'Patient assigned successfully'}
+
+
 
 
 class DoctorDeletePatients(Resource):

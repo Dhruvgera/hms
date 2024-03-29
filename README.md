@@ -71,4 +71,47 @@ curl -X POST ^
 
 
 
+For Doctors Resource:
 
+curl -X GET http://127.0.0.1:5000/doctor
+
+Add a new doctor
+
+
+curl -X POST ^
+  http://127.0.0.1:5000/doctor ^
+  -H "Content-Type: application/json" ^
+  -d "{\"doc_first_name\":\"John\",\"doc_last_name\":\"Doe\",\"doc_ph_no\":\"1234567890\",\"doc_address\":\"123 Main St\"}"
+
+Retrieve details of a doctor by ID
+
+
+curl -X GET http://127.0.0.1:5000/doctor/1
+
+
+Update details of a doctor by ID
+
+
+curl -X PUT ^
+  http://127.0.0.1:5000/doctor/1 ^
+  -H "Content-Type: application/json" ^
+  -d "{\"doc_first_name\":\"Jane\",\"doc_last_name\":\"Smith\",\"doc_ph_no\":\"9876543210\",\"doc_address\":\"456 Elm St\",\"patients_assigned\":\"1,2,3\"}"
+
+
+Assign a patient to a doctor
+
+curl -X PATCH ^
+  http://127.0.0.1:5000/doctor/1/patients/assign/1
+
+Delete a patient from a doctor
+
+curl -X PATCH ^
+  http://127.0.0.1:5000/doctor/1/patients/delete/1
+
+Retrieve list of available doctors
+
+curl -X GET http://127.0.0.1:5000/doctor/availability
+
+Retrieve list of patients assigned to a doctor
+
+curl -X GET http://127.0.0.1:5000/doctor/1/patients
