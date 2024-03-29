@@ -27,52 +27,48 @@ curl -X PUT ^  http://127.0.0.1:5000/appointment/7 ^  -H "Content-Type: applicat
 DEPARTMENTS
 
 For Departments Resource:
-GET /department - Retrieve all departments
+curl -X GET http://127.0.0.1:5000/department - Retrieve all departments
 
 
-curl -X GET http://127.0.0.1:5000/department POST /department - Add a new department
+Add a new department
 
 
-curl -X POST \
-  http://127.0.0.1:5000/department \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "department_id": 1,
-    "name": "Department Name",
-    "head_id": 1,
-    "doctors": [1, 2, 3]  // Optional
-  }'
+curl -X POST ^
+  http://127.0.0.1:5000/department ^
+  -H "Content-Type: application/json" ^
+  -d "{\"department_id\":1,\"name\":\"Department Name\",\"head_id\":1,\"doctors\":[1,2,3]}"
 
 
-GET /department/{department_id} - Retrieve details of a department by ID
+
+Retrieve details of a department by ID
 
 
 curl -X GET http://127.0.0.1:5000/department/1
-PUT /department/{department_id} - Update details of a department by ID
+
+Update details of a department by ID
 
 
-curl -X PUT \
-  http://127.0.0.1:5000/department/1 \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "name": "New Department Name",
-    "head_id": 2
-  }'
+curl -X PUT ^
+  http://127.0.0.1:5000/department/1 ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"New Department Name\",\"head_id\":2}"
 
 
-GET /department/{department_id}/doctors - Retrieve doctors assigned to a department
+
+
+Retrieve doctors assigned to a department
 
 
 curl -X GET http://127.0.0.1:5000/department/1/doctors
-POST /department/{department_id}/doctors - Assign or reassign doctors to a department
+
+Assign or reassign doctors to a department
 
 
-curl -X POST \
-  http://127.0.0.1:5000/department/1/doctors \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "doctors": [4, 5, 6]
-  }'
+curl -X POST ^
+  http://127.0.0.1:5000/department/1/doctors ^
+  -H "Content-Type: application/json" ^
+  -d "{\"doctors\":[4,5,6]}"
+
 
 
 
