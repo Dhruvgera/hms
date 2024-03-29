@@ -12,6 +12,8 @@ from package.department import DepartmentDoctor, Departments, Department
 import json
 import os
 
+from package.search import SearchDepartments, SearchDoctors, SearchPatients
+
 with open('config.json') as data_file:
     config = json.load(data_file)
 
@@ -34,6 +36,9 @@ api.add_resource(Departments, '/department')
 api.add_resource(Department, '/department/<int:department_id>')
 api.add_resource(DepartmentDoctor, '/department/<int:department_id>/doctors', '/department/<int:department_id>/doctors/search')
 api.add_resource(AssignedPatients, '/doctor/<int:doc_id>/patients')
+api.add_resource(SearchPatients, '/search/patients')
+api.add_resource(SearchDoctors, '/search/doctors')
+api.add_resource(SearchDepartments, '/search/departments')
 
 
 
