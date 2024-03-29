@@ -4,7 +4,7 @@ from flask import send_from_directory
 from flask_restful import Resource, Api
 from package.patient import Patients, Patient, PatientAppointments, PatientMedicalHistory
 from package.doctor import AssignedPatients, AvailableDoctors, DoctorAssignPatients, DoctorDeletePatients, Doctors, Doctor
-from package.appointment import Appointments, Appointment, DoctorAvailability
+from package.appointment import Appointments, Appointment
 from package.common import Common
 from package.department import DepartmentDoctor, Departments, Department
 

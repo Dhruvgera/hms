@@ -56,25 +56,5 @@ class Appointment(Resource):
     
 
 
-class DoctorAvailability(Resource):
-    """This contains API to check doctor availability"""
-
-    def get(self):
-        """Check if any doctor has appointments and update availability"""
-
-        all_doctors = conn.execute("SELECT doc_id FROM doctor").fetchall()
-        print(all_doctors)
-        available_doctors = []
-
-        for doctor_id in all_doctors:
-            appointments = conn.execute("SELECT * FROM appointment WHERE doc_id=?", doctor_id).fetchall()
-            if not appointments:
-                available_doctors.append(doctor_id[0])
-
-        if available_doctors:
-            return {'msg': 'Available doctors', 'available_doctors': available_doctors}
-        else:
-            return {'msg': 'All doctors have appointments'}
-
 
 
