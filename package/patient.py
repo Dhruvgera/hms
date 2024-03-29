@@ -56,6 +56,38 @@ class Patient(Resource):
         conn.commit()
         return patientInput
     
+    def post(self, id):
+        """API to add medical history to a patient"""
+
+        medical_history_input = request.get_json(force=True)
+        medical_history = medical_history_input['medical_history']
+        conn.execute("UPDATE patient SET medical_history=? WHERE pat_id=?", (medical_history, id))
+        conn.commit()
+        return {'msg': 'Medical history added successfully'}
+
+    def patch(self, id):
+        """API to add appointment to a patient"""
+
+        appointment_input = request.get_json(force=True)
+        appointment = appointment_input['appointment']
+        
+        # Fetch existing appointment record
+        existing_record = conn.execute("SELECT appointment_record FROM patient WHERE pat_id=?", (id,)).fetchone()
+        if existing_record:
+            existing_appointments = existing_record['appointment_record']
+            if existing_appointments:
+                existing_appointments = eval(existing_appointments)
+                existing_appointments.append(appointment)
+            else:
+                existing_appointments = [appointment]
+        else:
+            existing_appointments = [appointment]
+
+        # Update patient's appointment record
+        conn.execute("UPDATE patient SET appointment_record=? WHERE pat_id=?", (str(existing_appointments), id))
+        conn.commit()
+        return {'msg': 'Appointment added successfully'}
+    
 class PatientMedicalHistory(Resource):
     """API to handle medical history of a patient"""
 
@@ -73,3 +105,4 @@ class PatientAppointments(Resource):
 
         appointments = conn.execute("SELECT appointment_record FROM patient WHERE pat_id=?", (id,)).fetchone()
         return appointments
+    

@@ -115,3 +115,81 @@ curl -X GET http://127.0.0.1:5000/doctor/availability
 Retrieve list of patients assigned to a doctor
 
 curl -X GET http://127.0.0.1:5000/doctor/1/patients
+
+
+For Patients Resource:
+
+Retrieve list of all patients
+
+
+curl -X GET http://127.0.0.1:5000/patient
+
+Add a new patient
+
+curl -X POST ^
+  http://127.0.0.1:5000/patient ^
+  -H "Content-Type: application/json" ^
+  -d "{\"pat_first_name\":\"John\",\"pat_last_name\":\"Doe\",\"pat_insurance_no\":\"1234567890\",\"pat_ph_no\":\"9876543210\",\"pat_address\":\"123 Main St\"}"
+
+Retrieve details of a patient by ID
+
+
+curl -X GET http://127.0.0.1:5000/patient/1
+
+Delete a patient by ID
+
+
+curl -X DELETE http://127.0.0.1:5000/patient/1
+
+Update details of a patient by ID
+
+curl -X PUT ^
+  http://127.0.0.1:5000/patient/1 ^
+  -H "Content-Type: application/json" ^
+  -d "{\"pat_first_name\":\"Jane\",\"pat_last_name\":\"Smith\",\"pat_insurance_no\":\"0987654321\",\"pat_ph_no\":\"1234567890\",\"pat_address\":\"456 Elm St\"}"
+
+Add medical history:
+
+curl -X POST ^
+  http://127.0.0.1:5000/patient/2 ^
+  -H "Content-Type: application/json" ^
+  -d "{\"medical_history\":\"High blood pressure\"}"
+
+Retrieve medical history of a patient by ID
+
+curl -X GET http://127.0.0.1:5000/patient/1/history
+
+Retrieve appointments of a patient by ID
+
+curl -X GET http://127.0.0.1:5000/patient/1/appointment
+
+Set appointments data:
+
+curl -X PATCH ^
+  http://127.0.0.1:5000/patient/3 ^
+  -H "Content-Type: application/json" ^
+  -d "{\"appointment\":\"('Dr. White', '2024-04-02')\"}"
+
+
+Search for Patients:
+
+
+curl -X GET "http://127.0.0.1:5000/search/patients?query=John"
+This command searches for patients with the first name containing "John".
+
+Search for Doctors:
+
+
+curl -X GET "http://127.0.0.1:5000/search/doctors?query=Smith"
+This command searches for doctors with the first name containing "Smith".
+
+Search for Departments:
+
+
+curl -X GET "http://127.0.0.1:5000/search/departments?query=Cardiology"
+
+Assigned Patients List
+
+curl -X GET "http://127.0.0.1:5000/doctor/1/patients"
+
+There are more features as well, can reference app.py for the same
