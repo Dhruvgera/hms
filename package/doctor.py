@@ -71,9 +71,23 @@ class DoctorAssignPatients(Resource):
         if not patient_exists:
             return {'message': 'Patient not found'}, 404
 
-        conn.execute("UPDATE doctor SET patients_assigned=IFNULL(patients_assigned || ',', '') || ? WHERE doc_id=?", (patient_id, doc_id))
+        # Fetch currently assigned patients for the doctor
+        assigned_patients_record = conn.execute("SELECT patients_assigned FROM doctor WHERE doc_id=?", (doc_id,)).fetchone()
+        if assigned_patients_record:
+            assigned_patients = assigned_patients_record['patients_assigned']
+            assigned_patients_list = assigned_patients.split(',')
+            if str(patient_id) in assigned_patients_list:
+                return {'message': 'Patient already assigned to this doctor'}, 400
+
+        else:
+            # If no patients are assigned yet, initialize the list with the new patient
+            assigned_patients_updated = str(patient_id)
+
+        # Update doctor's assigned patients
+        conn.execute("UPDATE doctor SET patients_assigned=? WHERE doc_id=?", (assigned_patients_updated, doc_id))
         conn.commit()
         return {'message': 'Patient assigned successfully'}
+
 
 class DoctorDeletePatients(Resource):
     """Delete assigned patients from a doctor"""
